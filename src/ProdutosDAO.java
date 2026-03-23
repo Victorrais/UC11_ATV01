@@ -11,6 +11,7 @@
 import java.sql.*;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProdutosDAO {
@@ -18,7 +19,7 @@ public class ProdutosDAO {
     Connection conn;
     PreparedStatement prep;
     ResultSet resultset;
-    ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+    
 
     public void cadastrarProduto (ProdutosDTO produto)throws SQLException{
         var conDao=new conectaDAO();
@@ -36,7 +37,23 @@ public class ProdutosDAO {
 
     }
     
-    public ArrayList<ProdutosDTO> listarProdutos(){
+    public ArrayList<ProdutosDTO> listarProdutos() throws SQLException{
+        ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+        var conDao=new conectaDAO();
+        conn=conDao.connectDB();
+        
+        var query="select * from produtos";
+        
+        Statement stmt=conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        while(rs.next()){
+            var p = new ProdutosDTO();
+            p.setId(rs.getInt("id"));
+            p.setNome(rs.getString("nome"));
+            p.setStatus(rs.getString("status"));
+            p.setValor(rs.getInt("valor"));
+            listagem.add(p);
+        }
         
         return listagem;
     }
