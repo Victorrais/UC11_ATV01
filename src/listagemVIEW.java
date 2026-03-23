@@ -1,5 +1,7 @@
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -32,7 +34,7 @@ public class listagemVIEW extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         listaProdutos = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
+        labelProduto = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         id_produto_venda = new javax.swing.JTextPane();
@@ -56,8 +58,8 @@ public class listagemVIEW extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(listaProdutos);
 
-        jLabel1.setFont(new java.awt.Font("Lucida Fax", 0, 18)); // NOI18N
-        jLabel1.setText("Lista de Produtos");
+        labelProduto.setFont(new java.awt.Font("Lucida Fax", 0, 18)); // NOI18N
+        labelProduto.setText("Lista de Produtos");
 
         jLabel2.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
         jLabel2.setText("Vender Produto (ID)");
@@ -108,14 +110,14 @@ public class listagemVIEW extends javax.swing.JFrame {
                 .addContainerGap(49, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(labelProduto)
                 .addGap(193, 193, 193))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jLabel1)
+                .addComponent(labelProduto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
@@ -140,13 +142,23 @@ public class listagemVIEW extends javax.swing.JFrame {
         
         ProdutosDAO produtosdao = new ProdutosDAO();
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
+        try {
+            produtosdao.venderProduto(Integer.parseInt(id));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Erro ao atualizar os status do produto.",
+                    "Error!",
+                    JOptionPane.ERROR_MESSAGE
+                            );
+        }
         listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+
+        vendasVIEW vendas = new vendasVIEW(); 
+        vendas.setVisible(true);
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -193,11 +205,11 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JButton btnVender;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JTextPane id_produto_venda;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel labelProduto;
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
@@ -219,6 +231,12 @@ public class listagemVIEW extends javax.swing.JFrame {
                 });
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Erro ao iterar a tabela",
+                    "Error!",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     
     }
